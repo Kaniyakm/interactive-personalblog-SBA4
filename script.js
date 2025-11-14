@@ -99,8 +99,9 @@ function renderPosts() {
     postEl.dataset.id = post.id; // store id for delegation
 
 /// Build inner HTML — escape user content to avoid injection
+    // Corrected HTML string using backticks (`) for Template Literal
     postEl.innerHTML = `
-      <div class="meta">
+      </div class="meta">
         Created: ${escapeHtml(new Date(post.createdAt).toLocaleString())}
         ${post.updatedAt && post.updatedAt !== post.createdAt ? ' • Updated: ' + escapeHtml(new Date(post.updatedAt).toLocaleString()) : ''}
       </div>
@@ -111,9 +112,8 @@ function renderPosts() {
         <button class="edit-btn" data-action="edit" data-id="${post.id}">Edit</button>
         <button class="delete-btn" data-action="delete" data-id="${post.id}">Delete</button>
       </div>
-    `;
-
-    postsContainer.appendChild(postEl);
+    `; 
+    postsContainer.appendChild(postEl); // Move the append call outside the string
   });
 }
 
@@ -258,9 +258,7 @@ const post = posts.find(p => p.id === id);
   }
 });
 
-/* --- deletePostById(id) Removes a post from the posts array by id. Returns true on success, false if not found.
-*/
-
+/* deletePostById(id) Removes a post from the posts array by id. Returns true on success, false if not found.*/
 function deletePostById(id) {
   const idx = posts.findIndex(p => p.id === id);
   if (idx === -1) return false;
@@ -278,4 +276,43 @@ function attachFormInputListeners() {
   });
 }
 
-// Handle Delete Post*/
+// Event delegation for Edit/Delete buttons
+postsContainer.addEventListener('click', function (event) {
+    // Find the closest button clicked
+    const target = event.target;
+ 
+    // Handle Delete
+    if (target.classList.contains('delete-btn')) {
+        const post = target.closest('.post');
+        if (post) {
+            post.remove(); // Remove the post element
+            console.log(`Deleted post with ID: ${post.dataset.id}`);
+        }
+    }
+
+    // Handle Edit
+    else if (target.classList.contains('edit-btn')) {
+        const post = target.closest('.post');
+        if (post) {
+            const newContent = prompt('Edit post content:', post.firstChild.textContent.trim());
+            if (newContent !== null) {
+                // Update only the text node before the buttons
+                post.childNodes[0].textContent = newContent + ' ';
+                console.log(`Edited post with ID: ${post.dataset.id}`);
+            }
+        }
+    }
+});
+    // Remove post from array
+    const idx = posts.findIndex(p => p.id === id);
+    if (idx !== -1) {
+      posts.splice(idx, 1);           // Remove from posts array
+      saveToLocalStorage();           // Update localStorage
+      renderPosts();                  // Re-render posts
+      if (editingPostId === id) resetForm();  // Reset form if editing deleted post
+    } else {
+      alert('Failed to delete: post not found.');
+    }
+  
+
+  
