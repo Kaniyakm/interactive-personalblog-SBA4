@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Personal Blog</title>
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Link to JavaScript -->
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <!-- ==HEADER-->
+    <h1>My Personal Blog</h1>
+
+    <!-- == NEW POST FORM User enters title + content -->
+    <section id="post-form-section">
+        <h2>Create a New Post</h2>
+
+        <form id="postForm">
+
+            <!-- Post Title -->
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Enter post title">
+
+            <!-- Error message for title -->
+            <span id="titleError" class="error-message"></span>
+
+            <!-- Post Content -->
+            <label for="content">Content</label>
+            <textarea id="content" rows="5" placeholder="Write your content here..."></textarea>
+
+            <!-- Error message for content -->
+            <span id="contentError" class="error-message"></span>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn">Add Post</button>
+
+        </form>
+    </section>
+
+    <!-- POSTS DISPLAY SECTION Posts will be inserted here -->   
+<section id="posts Section">
+  <h2>My Posts</h2>
+
+<!--- Container where JS will render posts -->
+        <div id="postsContainer"></div>
+ </section>
+
+</body>
+</html>
